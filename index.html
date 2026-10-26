@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; media-src 'self' data: blob:; connect-src 'self' data: blob:; worker-src 'self' blob:; manifest-src 'self'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<title>JWT Inspector — Free JWT Decoder &amp; Expiry Checker | S3eidat Tools</title>
+<meta name="description" content="Decode JSON Web Tokens locally: header, payload, signature, human-readable iat/nbf/exp with expired or valid status, and HMAC (HS256/384/512) signature verification. Free, private, never sent anywhere.">
+<meta property="og:title" content="JWT Inspector — decode JWTs without sending them anywhere">
+<meta property="og:description" content="Decode a JWT, check its expiry and verify HS256 signatures. Runs 100% in your browser.">
+<meta property="og:image" content="screenshot.png">
+<link rel="icon" href="kit/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="kit/kit.css">
+<link rel="stylesheet" href="app.css">
+<script src="kit/kit.js"></script>
+</head>
+<body data-tool="jwt-inspector">
+<main class="s3-main">
+  <section class="s3-hero">
+    <h1>JWT Inspector</h1>
+    <p>Decode a JSON Web Token, see when it was issued and when it expires, and verify an HMAC signature with your secret.</p>
+  </section>
+
+  <div class="jwt-banner row">
+    <svg class="i"><use href="#i-lock"/></svg>
+    <span><b>Decoded locally.</b> Your token is never sent anywhere: this page has no server and its security policy blocks all network requests. Still, treat real production tokens like passwords.</span>
+  </div>
+
+  <div class="grid-2 jwt-grid mt">
+    <section class="card stack">
+      <div class="row between">
+        <h2>Encoded token</h2>
+        <div class="row">
+          <button class="btn ghost small" id="sample">Sample</button>
+          <button class="btn ghost small" id="clear">Clear</button>
+        </div>
+      </div>
+      <label for="token" class="faint">Paste a JWT (header.payload.signature). A leading "Bearer " is fine.</label>
+      <textarea class="textarea" id="token" spellcheck="false" autocomplete="off" placeholder="eyJhbGciOi…"></textarea>
+      <div class="out jwt-color" id="colored" aria-label="Token parts"></div>
+      <div class="row"><span class="chip" id="status">Waiting for a token</span><span class="chip" id="algChip" hidden></span></div>
+
+      <div class="jwt-sep"></div>
+      <h2>Verify signature <small>HS256 / HS384 / HS512</small></h2>
+      <label class="field">Secret
+        <input class="input mono" id="secret" spellcheck="false" autocomplete="off" placeholder="Shared secret used to sign the token">
+      </label>
+      <div class="row">
+        <label class="check"><input type="checkbox" id="secretB64"> Secret is Base64-encoded</label>
+        <span class="grow"></span>
+        <span class="chip" id="sigStatus">Enter the secret to verify</span>
+      </div>
+      <p class="faint">The secret is never stored. RSA / ECDSA tokens (RS256, ES256…) can be decoded but not verified here.</p>
+    </section>
+
+    <section class="stack">
+      <div class="card">
+        <div class="row between"><h2>Status</h2><span class="chip" id="expChip">—</span></div>
+        <div class="tbl-wrap"><table class="tbl" id="times"><tbody></tbody></table></div>
+      </div>
+      <div class="card">
+        <div class="row between"><h2><span class="jwt-dot h"></span>Header</h2><button class="btn small" id="copyHeader"><svg class="i"><use href="#i-copy"/></svg>Copy</button></div>
+        <pre class="out mt" id="header"></pre>
+      </div>
+      <div class="card">
+        <div class="row between"><h2><span class="jwt-dot p"></span>Payload</h2><button class="btn small" id="copyPayload"><svg class="i"><use href="#i-copy"/></svg>Copy</button></div>
+        <pre class="out mt" id="payload"></pre>
+        <div class="tbl-wrap mt" id="claimsWrap" hidden><table class="tbl" id="claims"><tbody></tbody></table></div>
+      </div>
+    </section>
+  </div>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
